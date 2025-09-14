@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<UserResponseDTO> getAllUsers() {
-        // Usar el método con JOIN FETCH para evitar N+1
+        // Usar el metodo con JOIN FETCH para evitar N+1
         return userRepository.findAllWithRoles().stream()
                 .map(userMapper::toUserResponseDTO)
                 .collect(Collectors.toList());
@@ -165,8 +165,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserEntity findUserByUsernameWithOldPasswords(String username) {
-        // Asumiendo que has creado este método en el repositorio para eficiencia
-        // Si no, la carga LAZY funcionará dentro del método transaccional
+        // Asumiendo que has creado este metodo en el repositorio para eficiencia
+        // Si no, la carga LAZY funcionará dentro del metodo transaccional
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con username: " + username));
     }

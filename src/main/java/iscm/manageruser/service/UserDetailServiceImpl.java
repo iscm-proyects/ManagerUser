@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -25,13 +24,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
     @Override
-    // @Transactional(readOnly = true) es una buena práctica para métodos de solo lectura.
-    // Mantiene la sesión de Hibernate abierta durante todo el método,
-    // aunque con JOIN FETCH no es estrictamente necesario, es una buena costumbre.
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        // 1. Usamos el método optimizado que trae los roles y devuelve un Optional
+        // 1. Usamos el metodo optimizado que trae los roles y devuelve un Optional
         UserEntity userEntity = userRepository.findByUsernameWithRoles(username)
                 .orElseThrow(() -> new UsernameNotFoundException("El usuario '" + username + "' no existe."));
 
@@ -59,7 +55,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         );
     }
 
-    // Método auxiliar para mantener el código limpio
+    // Metodo auxiliar para mantener el código limpio
     private boolean isCredentialsNonExpired(LocalDate expirationDate) {
         if (expirationDate == null) {
             return true; // Si no hay fecha de caducidad, nunca expira
