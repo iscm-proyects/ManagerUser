@@ -26,8 +26,12 @@ import iscm.manageruser.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1")
-@Tag(name = "User Management", description = "API para la gestión completa de usuarios (CRUD, seguridad y acciones administrativas).")
-@SecurityRequirement(name = "bearerAuth") // Requiere autenticación JWT para todos los endpoints en este controlador.
+@Tag
+        (
+                name = "User Management",
+                description = "API para la gestión completa de usuarios (CRUD, seguridad y acciones administrativas)."
+        )
+@SecurityRequirement(name = "bearerAuth")
 public class ManageController {
 
     private final UserService userService;
@@ -38,7 +42,10 @@ public class ManageController {
 
     // --- Endpoints Administrativos ---
 
-    @Operation(summary = "Crear un nuevo usuario", description = "Crea un nuevo usuario en el sistema con la información y roles proporcionados. Requiere rol de ADMIN.")
+    @Operation(
+            summary = "Crear un nuevo usuario",
+            description = "Crea un nuevo usuario en el sistema con la información y roles proporcionados. Requiere rol de ADMIN."
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Usuario creado exitosamente.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Datos de solicitud inválidos (ej. email/username duplicado, contraseña débil).", content = @Content),
@@ -53,15 +60,26 @@ public class ManageController {
         return ResponseEntity.created(location).body(newUser);
     }
 
-    @Operation(summary = "Obtener una lista de todos los usuarios", description = "Devuelve una lista paginada y filtrable de todos los usuarios del sistema. Requiere rol de ADMIN.")
-    @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida exitosamente.")
+    @Operation
+            (
+                    summary = "Obtener una lista de todos los usuarios",
+                    description = "Devuelve una lista paginada y filtrable de todos los usuarios del sistema. Requiere rol de ADMIN."
+            )
+    @ApiResponse
+            (
+                    responseCode = "200",
+                    description = "Lista de usuarios obtenida exitosamente."
+            )
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @Operation(summary = "Obtener un usuario por su nombre de usuario", description = "Recupera los detalles de un usuario específico. Un ADMIN puede ver a cualquier usuario, mientras que un usuario normal solo puede ver su propia información.")
+    @Operation
+            (
+                    summary = "Obtener un usuario por su nombre de usuario",
+                    description = "Recupera los detalles de un usuario específico. Un ADMIN puede ver a cualquier usuario, mientras que un usuario normal solo puede ver su propia información.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Usuario encontrado y devuelto.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "El usuario con el nombre de usuario especificado no fue encontrado.", content = @Content)
@@ -73,7 +91,11 @@ public class ManageController {
         return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 
-    @Operation(summary = "Actualizar la cuenta de un usuario", description = "Permite a un ADMIN actualizar la información editable (punto, ciudad, cargo, roles) de una cuenta de usuario.")
+    @Operation
+            (
+                    summary = "Actualizar la cuenta de un usuario",
+                    description = "Permite a un ADMIN actualizar la información editable (punto, ciudad, cargo, roles) de una cuenta de usuario."
+            )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Cuenta actualizada exitosamente.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Datos de solicitud inválidos.", content = @Content),
@@ -88,7 +110,11 @@ public class ManageController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @Operation(summary = "Desbloquear una cuenta de usuario", description = "Permite a un ADMIN desbloquear una cuenta que ha sido bloqueada por exceso de intentos de login fallidos.")
+    @Operation
+            (
+                    summary = "Desbloquear una cuenta de usuario",
+                    description = "Permite a un ADMIN desbloquear una cuenta que ha sido bloqueada por exceso de intentos de login fallidos."
+            )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Usuario desbloqueado exitosamente.", content = @Content),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado.", content = @Content)
@@ -101,7 +127,11 @@ public class ManageController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Resetear la contraseña de un usuario", description = "Un ADMIN puede forzar el reseteo de la contraseña de un usuario. Se genera una nueva contraseña temporal y se devuelve en la respuesta.")
+    @Operation
+            (
+                    summary = "Resetear la contraseña de un usuario",
+                    description = "Un ADMIN puede forzar el reseteo de la contraseña de un usuario. Se genera una nueva contraseña temporal y se devuelve en la respuesta."
+            )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Contraseña reseteada. La nueva contraseña está en el cuerpo de la respuesta.", content = @Content(mediaType = "application/json", schema = @Schema(example = "{\"newPassword\": \"aBcDeFgHiJkL12\"}"))),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado.", content = @Content)
@@ -118,7 +148,11 @@ public class ManageController {
     // --- Endpoints para el Usuario Autenticado ---
 
     @Tag(name = "Account Management", description = "Endpoints para que el usuario gestione su propia cuenta.")
-    @Operation(summary = "Actualizar mi propia contraseña", description = "Permite al usuario autenticado cambiar su propia contraseña. Debe proporcionar la contraseña actual y la nueva.")
+    @Operation
+            (
+                    summary = "Actualizar mi propia contraseña",
+                    description = "Permite al usuario autenticado cambiar su propia contraseña. Debe proporcionar la contraseña actual y la nueva."
+            )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Contraseña actualizada exitosamente.", content = @Content),
             @ApiResponse(responseCode = "400", description = "Datos inválidos (ej. la contraseña actual no coincide, la nueva es débil o ya fue usada).", content = @Content)

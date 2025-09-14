@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 public class GenerateAlphaNumericString {
+
     public static String getRandomString(int i) {
         byte[] bytearray;
         bytearray = new byte[256];

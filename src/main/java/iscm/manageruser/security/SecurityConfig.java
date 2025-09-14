@@ -24,19 +24,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true) // @EnableGlobalMethodSecurity está deprecado
+@EnableMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
-    private final UserRepository userRepository; // Necesario para el filtro de autenticación
+    private final UserRepository userRepository;
 
     // Inyección por constructor (MEJOR PRÁCTICA)
     public SecurityConfig(JwtUtils jwtUtils, UserDetailsService userDetailsService,
@@ -51,20 +49,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager) throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils, userRepository);
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/api/v1/login"); // Es mejor ser explícito con la URL completa
+        jwtAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
 
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                // SOLUCIÓN: Simplemente habilita CORS. Spring usará el bean 'CorsConfigurationSource' que ya definiste.
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> {
-                    // Asegúrate que la URL del login coincida con la del filtro
                     auth.requestMatchers("/api/v1/login").permitAll();
-
                     // Si usas Swagger/OpenAPI, también deberías permitir el acceso a su UI
                     auth.requestMatchers( "/api-docs/**","/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
                     auth.requestMatchers("/.well-known/jwks.json").permitAll();
-
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -87,7 +81,6 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.allowed-origins}") List<String> allowedOrigins) {
         CorsConfiguration configuration = new CorsConfiguration();
-        // NO USES "*" en producción. Carga los orígenes desde application.properties
         configuration.setAllowedOrigins(allowedOrigins);
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));

@@ -1,6 +1,5 @@
 package iscm.manageruser.request;
 
-
 import jakarta.validation.constraints.NotBlank;
 
 /**

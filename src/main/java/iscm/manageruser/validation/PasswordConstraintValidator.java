@@ -12,7 +12,7 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
     // (?=.*[0-9])       - al menos un dígito
     // (?=.*[a-z])       - al menos una letra minúscula
     // (?=.*[A-Z])       - al menos una letra mayúscula
-    // (?=.*[!@#&()–[{}]:;',?/*~$^+=<>]) - al menos un carácter especial
+    // (?=.*[!@#&()–[{}]:;',?/*~$^+=<>[]() - al menos un carácter especial
     // .                 - cualquier carácter
     // {14,}             - al menos 14 caracteres de longitud
     // $                 - fin de la cadena

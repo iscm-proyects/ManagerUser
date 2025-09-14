@@ -42,7 +42,7 @@ public class JwkSetController {
                           "keys": [
                             {
                               "kty": "RSA",
-                              "kid": "bisa-bolsa-key-1",
+                              "kid": "iscm-key-1",
                               "n": "ALongBase64UrlEncodedString...",
                               "e": "AQAB"
                             }

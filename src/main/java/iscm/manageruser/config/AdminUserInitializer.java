@@ -32,7 +32,7 @@ public class AdminUserInitializer implements CommandLineRunner {
     }
 
     @Override
-    @Transactional // ¡MUY IMPORTANTE! Envuelve toda la operación en una única transacción.
+    @Transactional
     public void run(String... args) {
         // --- 1. Sincronizar los roles en la base de datos ---
         logger.info("Sincronizando roles de la base de datos...");
@@ -68,18 +68,22 @@ public class AdminUserInitializer implements CommandLineRunner {
 
         UserEntity adminUser = UserEntity.builder()
                 .username(adminUsername)
-                .password(passwordEncoder.encode("Bisa.2025")) // Usa una contraseña segura
-                .email("admin@bisabolsa.com")
+                .password(passwordEncoder.encode("iscm.2025--1234")) // Usa una contraseña segura
+                .email("admin@iscm.com")
                 .primer_nombre("Administrador")
                 .apellido_paterno("del")
                 .apellido_materno("Sistema")
-                .punto("Oficina Central")
+                .sucursal("Central")
                 .ciudad("La Paz")
                 .cargo("Administrador de Sistemas")
                 .fecha_caducidad_password(LocalDate.now().plusDays(90))
                 .bloqueado(false)
                 .intentos_ingreso(0)
-                .roles(adminRoles) // Asigna el SET de roles "managed"
+                .roles(adminRoles)
+                // AÑADE ESTAS LÍNEAS CON VALORES DE EJEMPLO:
+                .direccion("Calle Falsa 123")
+                .telefono("12345678")
+                .celular("98765432")
                 .build();
 
         userRepository.save(adminUser);

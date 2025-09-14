@@ -25,8 +25,7 @@ public class JwtUtils {
     private final RSAPrivateKey privateKey;
     private final RSAPublicKey publicKey;
 
-    @Value("${jwt.time.expiration}")
-    private Long timeExpiration;
+    private final Long timeExpiration = 86400000L;
 
     @Value("${jwt.keystore.alias}")
     private String keyAlias;

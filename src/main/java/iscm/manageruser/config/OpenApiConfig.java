@@ -11,17 +11,17 @@ import io.swagger.v3.oas.annotations.servers.Server;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "User Management API - Bisa Bolsa",
-                description = "API para la gestión y autenticación de usuarios del sistema interno de Bisa Bolsa.",
+                title = "User Management API - User Manager ISCM",
+                description = "API para la gestión y autenticación de usuarios del sistema interno.",
                 version = "1.0.0",
                 contact = @Contact(
                         name = "Área de Sistemas",
-                        email = "sistemas@bisabolsa.com",
-                        url = "https://www.bisabolsa.com"
+                        email = "sistemas@iscm.com",
+                        url = "https://www.iscm.com"
                 ),
                 license = @License(
                         name = "Licencia Propietaria",
-                        url = "https://www.bisabolsa.com/licencia"
+                        url = "https://www.iscm.com/licencia"
                 )
         ),
         servers = {
@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 ),
                 @Server(
                         description = "Servidor de Producción",
-                        url = "https://api.bisabolsa.com"
+                        url = "https://api.iscm.com"
                 )
         }
 )

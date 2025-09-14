@@ -20,5 +20,4 @@ public class OldPassword {
 
     @NotBlank
     private String password;
-
 }

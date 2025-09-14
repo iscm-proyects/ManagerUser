@@ -3,15 +3,13 @@ public enum ERole {
     ADMIN,
     JEFE,
     ASISTENTE,
-    OFICIAL,
-    RESPONSABLE,
     GERENTE,
     OPERACIONES,
-    INVERSIONES,
-    COMERCIAL,
     CONTABILIDAD,
 
-    RIESGOS,
+    SUPERVISOR,
+    MARKETING,
+    ANALISTA,
     GERENCIA,
     SISTEMAS
 }

@@ -104,7 +104,7 @@ public class LoggingFilter implements Filter {
         }
         try {
             // Intenta parsear como JSON para enmascarar campos específicos
-            // Si no es JSON, devuelve un placeholder para evitar loggear contenido no estructurado
+            // Si no es JSON, devuelve un placeholder para evitar ingresar contenido no estructurado
             @SuppressWarnings("unchecked")
             Map<String, Object> bodyMap = objectMapper.readValue(body, Map.class);
 
@@ -116,7 +116,7 @@ public class LoggingFilter implements Filter {
             return objectMapper.writeValueAsString(bodyMap);
         } catch (JsonProcessingException e) {
             // Si el cuerpo no es JSON (ej. texto plano, form-data), no lo registramos
-            // para evitar loggear datos potencialmente sensibles sin querer.
+            // para evitar ingresar datos potencialmente sensibles sin querer.
             return "[Non-JSON body]";
         }
     }

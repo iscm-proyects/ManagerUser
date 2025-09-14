@@ -38,15 +38,15 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 .collect(Collectors.toSet());
 
         // 3. Mapeamos el estado de nuestro UserEntity a los flags de Spring Security
-        boolean accountNonExpired = true; // Por defecto, o puedes añadir una lógica de fecha de expiración de cuenta
+        boolean accountNonExpired = true;
         boolean credentialsNonExpired = isCredentialsNonExpired(userEntity.getFecha_caducidad_password());
-        boolean enabled = true; // Podrías tener un campo 'enabled' en tu UserEntity
-        boolean accountNonLocked = !userEntity.isBloqueado(); // ¡Importante!
+        boolean enabled = true;
+        boolean accountNonLocked = !userEntity.isBloqueado();
 
         // 4. Creamos y devolvemos el objeto UserDetails con la lógica correcta
         return new User(
                 userEntity.getUsername(),
-                userEntity.getPassword(), // La contraseña ya debe estar hasheada en la BD
+                userEntity.getPassword(),
                 enabled,
                 accountNonExpired,
                 credentialsNonExpired,
@@ -58,7 +58,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     // Metodo auxiliar para mantener el código limpio
     private boolean isCredentialsNonExpired(LocalDate expirationDate) {
         if (expirationDate == null) {
-            return true; // Si no hay fecha de caducidad, nunca expira
+            return true;
         }
         return LocalDate.now().isBefore(expirationDate);
     }

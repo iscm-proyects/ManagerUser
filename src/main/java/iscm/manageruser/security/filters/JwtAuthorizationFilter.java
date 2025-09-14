@@ -40,12 +40,19 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 String username = jwtUtils.getUsernameFromToken(token);
                 Claims claims = jwtUtils.extractAllClaims(token);
 
-                List<String> roles = claims.get("roles", List.class);
+
+                List<String> rolesFromClaims = claims.get("roles", List.class);
+                Collection<SimpleGrantedAuthority> authorities = rolesFromClaims.stream()
+                        // añadir el prefijo "ROLE_" si tus @PreAuthorize lo esperan (y sí lo hacen).
+                        .map(role -> new SimpleGrantedAuthority(role.startsWith("ROLE_") ? role : "ROLE_" + role))
+                        .collect(Collectors.toList());
+
+                /*List<String> roles = claims.get("roles", List.class);
 
                 Collection<SimpleGrantedAuthority> authorities = roles.stream()
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
-
+                 */
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(username, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);

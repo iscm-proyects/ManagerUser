@@ -58,10 +58,13 @@ public class UserServiceImpl implements UserService {
                 .segundo_nombre(createUserDTO.getSegundo_nombre())
                 .apellido_paterno(createUserDTO.getApellido_paterno())
                 .apellido_materno(createUserDTO.getApellido_materno())
-                .punto(createUserDTO.getPunto())
+                .sucursal(createUserDTO.getSucursal())
+                .direccion(createUserDTO.getDireccion())
+                .celular(createUserDTO.getCelular())
+                .telefono(createUserDTO.getTelefono())
                 .ciudad(createUserDTO.getCiudad())
                 .cargo(createUserDTO.getCargo())
-                .fecha_caducidad_password(LocalDate.now().plusDays(90)) // Contraseña inicial válida por 90 días
+                .fecha_caducidad_password(LocalDate.now().plusDays(90))
                 .intentos_ingreso(0)
                 .bloqueado(false)
                 .roles(roles)
@@ -143,9 +146,12 @@ public class UserServiceImpl implements UserService {
         UserEntity user = findUserByUsername(username);
         Set<RoleEntity> roles = findAndValidateRoles(dto.getRoles());
 
-        user.setPunto(dto.getPunto());
+        user.setSucursal(dto.getSucursal());
         user.setCiudad(dto.getCiudad());
         user.setCargo(dto.getCargo());
+        user.setDireccion(dto.getDireccion());
+        user.setTelefono(dto.getTelefono());
+        user.setCelular(dto.getCelular());
         user.setRoles(roles);
 
         UserEntity updatedUser = userRepository.save(user);
@@ -167,7 +173,7 @@ public class UserServiceImpl implements UserService {
     private UserEntity findUserByUsernameWithOldPasswords(String username) {
         // Asumiendo que has creado este metodo en el repositorio para eficiencia
         // Si no, la carga LAZY funcionará dentro del metodo transaccional
-        return userRepository.findByUsername(username)
+        return userRepository.findByUsernameWithOldPasswords(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con username: " + username));
     }
 
