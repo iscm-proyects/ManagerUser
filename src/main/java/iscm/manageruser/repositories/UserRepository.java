@@ -18,7 +18,7 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
     // Devuelve Optional y tiene el tipo correcto (UserEntity)
     Optional<UserEntity> findByEmail(String email);
 
-    // NUEVO MÉTODO DE ALTO RENDIMIENTO:
+    // NUEVO METODO DE ALTO RENDIMIENTO:
     @Query("SELECT u FROM UserEntity u LEFT JOIN FETCH u.roles")
     List<UserEntity> findAllWithRoles();
     @Query("SELECT u FROM UserEntity u LEFT JOIN FETCH u.roles WHERE u.username = :username")
